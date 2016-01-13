@@ -22,34 +22,34 @@ function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
 
         for(var i=0; i<numberDivsPerRow; i++){
             for(var j = 0; j<numberDivsPerColumn;j++){
-                divColor = "";
-
+                divColorVar = "";
                 if(this.returnHex){
-                    try{
-                        divColor = rgb2hex(document.getElementById(i+":"+j).style.backgroundColor);
+                  try{
+                    divColorVar = rgb2hex(document.getElementById(i+":"+j).style.backgroundColor);
                     }
                     catch(err){
-                        divColor =  "transparent";
+                        divColorVar =  "";
                     }
                 }
-                else{
-                    divColor = document.getElementById(i+":"+j).style.backgroundColor;
+
+                if(!this.returnHex){
+                    divColorVar = document.getElementById(i+":"+j).style.backgroundColor;
                 }
 
-                if (divColor === ""){
-                    divColor="transparent";
+                if (divColorVar === ""){
+                    divColorVar="transparent";
                 }
 
                 JSONObject.matrix_data.push({
                         row: i,
                         column: j,
-                        divColor: document.getElementById(i+":"+j).style.backgroundColor
+                        divColor: divColorVar
                 });
             }
         }
-
-
     };
+    
+    
 
     this.printData = function(){
         console.log(JSONObject);
