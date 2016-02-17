@@ -1,12 +1,3 @@
-<!--
-<script src="../JS/GenerateDrawingArea.js"></script>
-
-<body onload="DoDivBox(5,4)">
-<div id="MainDiv" style="border:1px solid black; width:162px;">
-</div>
-</body>
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,11 +28,13 @@
 
         $(document).ready(function(){
 
+            var x = 140 *3;
+
             // Parameters of Matrix
-            var drawBoxWidth = 500;
-            var drawBoxHeight = 500;
-            var divWidth = 50;
-            var divHeight =50;
+            var drawBoxWidth = x;
+            var drawBoxHeight = 140*3;
+            var divWidth = (x/14);
+            var divHeight =(x/14);
             var classNameDivs = "singleBox";
             var idNameDrawingArea = "drawingArea";
 
@@ -67,12 +60,10 @@
             // Enable users to draw on in the drawingArea
             DrawEngineCreation(numberDivsPerRow, numberDivsPerColumn);
 
-            // Parameters for sending data
-            var sendHex = false;
 
             // Function to create JSON object for microcontroller
             window.sendData = function(){
-                executeDataSend(numberDivsPerRow, numberDivsPerColumn,sendHex);
+                executeDataSend(numberDivsPerRow, numberDivsPerColumn);
             }
         })
 

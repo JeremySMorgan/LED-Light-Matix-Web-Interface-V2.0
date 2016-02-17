@@ -25,16 +25,15 @@
 
  */
 
-function executeDataSend(numberDivsPerRow, numberDivsPerColumn,returnHex){
-    var DE = new DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex);
+function executeDataSend(numberDivsPerRow, numberDivsPerColumn){
+    var DE = new DataSendEngine(numberDivsPerRow, numberDivsPerColumn);
     DE.sendData();
     DE.printData();
 }
 
-function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
+function DataSendEngine(numberDivsPerRow, numberDivsPerColumn){
     this.numberDivsPerRow = numberDivsPerRow;
     this.numberDivsPerColumn = numberDivsPerColumn;
-    this.returnHex = false;
 
 
     var JSONObject = {"matrix_data":[]};
@@ -72,21 +71,23 @@ function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
 
 
 
-
-
     // CREATE JSON OBJECT TO SEND
     this.sendData = function() {
 
-        xInv = false;
+        xInv = true;
+        count = 0;
 
         for(var Y = 0; Y < numberDivsPerColumn; Y++) {
 
-
             if (xInv){
-                for (var Xinv = 0; Xinv < numberDivsPerRow; Xinv++) {
+                for (var Xinvr = 0; Xinvr < numberDivsPerRow; Xinvr++) {
 
+
+                    console.log("x going Right: "+Xinvr);
+
+                    count++;
                     JSONObject.matrix_data.push({
-                        COLOR: this.getColor(Xinv,Y)
+                        COLOR: this.getColor(Xinvr,Y)
                     });
 
                 }
@@ -94,8 +95,11 @@ function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
             }
 
             else{
-                for (var X = numberDivsPerRow; X > 0; X--) {
+                for (var X = numberDivsPerRow-1; X >= 0; X--) {
 
+                    console.log("x going LEFT: "+X);
+
+                    count++;
                     JSONObject.matrix_data.push({
                         COLOR: this.getColor(X,Y)
                     });
@@ -107,13 +111,16 @@ function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
 
         }
 
-
-
-
-
-
+        console.log("count: "+ count);
 
     };
+
+
+
+
+
+
+
 
 
 
@@ -128,21 +135,10 @@ function DataSendEngine(numberDivsPerRow, numberDivsPerColumn,returnHex){
         };
 
         console.log(JSON.stringify(JSONObject));
-        xhttp.open("POST", "ajax_data:"+JSON.stringify(JSONObject)+"&END=true", true);
-        xhttp.send();
+        //xhttp.open("POST", "ajax_data:"+JSON.stringify(JSONObject)+"&END=true", true);
+        //xhttp.send();
     };
 
 
 
-    var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
-
-    //Function to convert hex format to a rgb color
-    function rgb2hex(rgb) {
-        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-    }
-
-    function hex(x) {
-        return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
-    }
 }
